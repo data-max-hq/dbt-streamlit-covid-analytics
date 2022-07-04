@@ -6,7 +6,7 @@ sources:
     schema: public_source
     tables:
       - name: covid_data
-        description: Covid data for all states agg by dates
+        description: Covid data for all  chosen states
         columns:
           - name: updated_at
             description: Last time the record was updated
