@@ -39,6 +39,7 @@ def populate_db(countries):
     st.success('Tests created!')
 
     time.sleep(0.5)
+
     st.success('Db populated!')
 
 def set_false(button):
@@ -90,3 +91,12 @@ if get_data:
     populate_db(selection_codes)
     dataframe = pd.read_sql_table('covid_data', con=engine, schema='public_source')
     st.write(dataframe)
+country_samples = []
+for i in range(0,20):
+    country_samples.append(list(country.countries)[i].name)
+st.write('# *DBT Visualisation App*')
+populate = st.button('Populate DB', 1, 'Populate the database', on_click=populate_db)
+remove = st.button('Remove Output', 2)
+
+
+st.multiselect('Select countries: ', country_samples)
