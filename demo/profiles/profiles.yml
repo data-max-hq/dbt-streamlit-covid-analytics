@@ -6,7 +6,7 @@ demo:
       host: "localhost"
       user: "postgres"
       password: "postgres"
-      port: 5432
+      port: 5433
       dbname: "postgres"
       schema : "public"
       threads: 4
