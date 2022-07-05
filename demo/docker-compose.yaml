@@ -46,8 +46,17 @@
 version: '3.5'
 
 services:
+  streamlit:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - streamlit:/data/streamlit
+    depends_on:
+      - db
+      
   postgres:
-#    container_name: postgres_container1
+    container_name: db
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -57,8 +66,8 @@ services:
     volumes:
        - postgres:/data/postgres
     ports:
-      # - "5432"
-     - "5433:5432"
+      - "5432:5432"
+    #  - "5433:5432"
     networks:
       - postgres
     restart: unless-stopped
@@ -69,4 +78,5 @@ networks:
     driver: bridge
 
 volumes:
-    postgres:
+  postgres:
+  streamlit:

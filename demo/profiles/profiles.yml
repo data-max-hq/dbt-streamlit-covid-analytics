@@ -1,12 +1,21 @@
 demo:
-  target: dev
+  target: local
   outputs:
-    dev:
+    docker:
+      type: postgres
+      host: "host.docker.internal"
+      user: "postgres"
+      password: "postgres"
+      port: 5432
+      dbname: "postgres"
+      schema : "public"
+      threads: 4
+    local:
       type: postgres
       host: "localhost"
       user: "postgres"
       password: "postgres"
-      port: 5433
+      port: 5432
       dbname: "postgres"
       schema : "public"
       threads: 4
