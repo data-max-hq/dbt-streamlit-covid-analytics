@@ -1,2 +1,6 @@
 dbt-core
 dbt-postgres
+pandas
+sqlalchemy
+psycopg-binary
+emoji
