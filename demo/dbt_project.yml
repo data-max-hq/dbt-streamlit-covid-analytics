@@ -45,3 +45,5 @@ seeds:
 
 #vars:
 #  month: '2022-06'
+
+#log-path: dbt_logs
