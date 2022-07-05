@@ -1,6 +1,7 @@
 dbt-core
 dbt-postgres
-pandas
+streamlit
+psycopg2-binary
+pycountry
 sqlalchemy
-psycopg-binary
 emoji
