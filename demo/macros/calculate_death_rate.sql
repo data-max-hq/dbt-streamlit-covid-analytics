@@ -1,3 +1,5 @@
 {% macro calc_death_rate(n=4) %}
-    (a.deaths/b.population)*{{10**n}}
+
+    (dpm.deaths/dc.population) * {{ 10**n }}
+
 {% endmacro%}
