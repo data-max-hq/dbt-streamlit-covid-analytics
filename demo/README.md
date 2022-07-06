@@ -45,7 +45,7 @@ Make sure you are using a virtual environment for this.
 cd demo
 dbt deps
 ```
-From now on every other command with have a prefix of 'dbt', so be prepared to ruin those three keyboard keys.
+From now on every other command will have a prefix of 'dbt', so be prepared to ruin those three keyboard keys.
 
 By "three keys" I mean <kbd>Ctrl</kbd> + <kbd>C</kbd> and <kbd>Ctrl</kbd> + <kbd>V</kbd>  🤓
 
