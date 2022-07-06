@@ -295,12 +295,11 @@ docker compose down
 ## Install requirements and create the docker containers
 
 ```bash
-pip install -r requirements.txt
 docker compose up --build
 ```
 
 ## Open the UI
-Use a browser to navigate to  http://172.29.0.2:8501
+Use a browser to navigate to  http://localhost:8501
 
 From the UI choose a list of countries you would like so see analytics regarging covid for the past 2-3 years and the output messages will show you the steps followed to generate a line graph for each chosen country.
 
@@ -310,15 +309,3 @@ From the UI choose a list of countries you would like so see analytics regarging
 ```bash
 docker compose down
 ```
-
-
-<hr>
-
-
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
