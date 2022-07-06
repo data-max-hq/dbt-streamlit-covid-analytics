@@ -41,6 +41,7 @@ Make sure you are using a virtual environment for this.
 
 
 ## Install dbt packages 
+Refer to https://hub.getdbt.com/
 ```bash
 cd demo
 dbt deps
