@@ -43,5 +43,5 @@ seeds:
   demo:
     schema: source
 
-#vars:
-#  month: '2022-06'
+
+

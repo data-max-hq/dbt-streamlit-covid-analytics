@@ -19,3 +19,13 @@ demo:
       dbname: "postgres"
       schema : "public"
       threads: 4
+
+    prod:
+      type: postgres
+      host: "host.docker.internal"
+      user: "postgres"
+      password: "postgres"
+      port: 5432
+      dbname: "postgres"
+      schema: "public"
+      threads: 4

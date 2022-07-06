@@ -31,14 +31,8 @@ models:
             description: Region of the country
             tests:
               - not_null
-              - unique
           - name: sub-region
             description: Sub-region of the country
-            tests:
-              - not_null
-#            tests:
-#              - accepted_values:
-#                  values: ['', '']
           - name: intermediate-region
             description: Intermediate-region of the country
 
