@@ -11,7 +11,7 @@ Dbt project with postgres, python, and streamlit.
 * Docker Compose
 * The Office (American TV series)
 
-# Run the dbt project without streamlit
+# Run the dbt project without Streamlit
 
 ## Start the database container
 ```bash
@@ -19,19 +19,32 @@ docker compose up postgres
 ```
 This will create a postgres container from the image defined in the docker-compose.yaml file.
 
-
-
-## Connect to the database
-Using your favourite SQL IDE, create a new connection with a Postgres database instance.
-
+## Create a virtual environment (Windows)
+```bash
+pip install virtualenv
 ```
-Credentials:
+This will install the virtual environment package.
+Now while in the project directory use the following command:
+```bash
+virtualenv env
+```
+All that is left is activating the environment.
+```bash
+\env\Scripts\activate.bat
+```
 
-host: localhost
-database: postgres
-username: postgres
-password: postgres
-port: 5432
+## Create a virtual environment (Linux and MacOS)
+Open terminal and install the package.
+```bash
+pip install virtualenv
+```
+To create the environment go to the project directory and type:
+```bash
+virtualenv venv
+```
+And to activate it use this command.
+```bash
+source venv/bin/activate
 ```
 
 ## Install dependencies
@@ -39,6 +52,11 @@ port: 5432
 pip install -r requirements.txt
 ```
 Make sure you are using a virtual environment for this. 
+
+Now move inside the demo folder.
+```bash
+cd demo
+```
 
 
 ## Install dbt packages 
@@ -49,7 +67,6 @@ E.g.: {{ macro_name(<optional_parameters>)}}
 
 Refer to https://hub.getdbt.com/ to check out many many packages.
 ```bash
-cd demo
 dbt deps
 ```
 From now on every other command will have a prefix of 'dbt', so be prepared to ruin those three keyboard keys.
@@ -58,11 +75,11 @@ By "three keys" I mean <kbd>Ctrl</kbd> + <kbd>C</kbd> and <kbd>Ctrl</kbd> + <kbd
 
 
 ## Get data from the API
-There is a python script that reads from  https://corona-api.com/countries/{country_code}?includeTimeline=True and writes in <i>covid_data.csv</i> in the <b>seeds</b> folder.
+There is a python script that reads from  https://corona-api.com/countries/{country_code}?includeTimeline=True and writes in ```bash covid_data.csv``` in the <b>seeds</b> folder.
 
 E.g.  https://corona-api.com/countries/al?includeTimeline=True
 
-An example of the JSON response is as follows. The <b>data.timeline</b> list is what feeds the <i>covid_data</i> table with records.
+An example of the JSON response is as follows. The ```bash data.timeline``` list is what feeds the <i>covid_data</i> table with records.
 
 ```
 {
@@ -108,10 +125,10 @@ An example of the JSON response is as follows. The <b>data.timeline</b> list is 
    }
 
 ```
-So the API needs a countries code to return data. For this there is a <b>COUNTRIES</b> list hardcoded on get_data.py script.
+So the API needs a countries code to return data. For this there is a ```bash COUNTRIES``` list hardcoded on ```bash get_data.py``` script.
 Add any country code to this list to feed the dataset with new data. 
 ```
-COUNTRIES = ['al', 'de']
+COUNTRIES = ['AL', 'DE']
 ```
 
 Run script
@@ -121,7 +138,7 @@ python get_data.py
 
 
 ## CSV to database tables
-Seeds are CSV files in your dbt project (typically in your seeds directory), that dbt can load into your data warehouse using the <i>dbt seed</i> command.
+Seeds are CSV files in your dbt project (typically in your seeds directory), that dbt can load into your data warehouse using the ```bashdbt seed``` command.
 ```bash
 dbt seed --profiles-dir ./profiles
 ```
@@ -147,7 +164,7 @@ Types:
 * Ephemeral
 * Incremental
 
-All materializations are re-built everytime the <b>run</b> command is executed. This results on re-processing the same records over and over again.
+All materializations are re-built everytime the ```bash dbt run``` command is executed. This results on re-processing the same records over and over again.
 
 To filter the data to be processed, one can use the Incremental type of materialization
 and define the filter rule like this:
@@ -181,10 +198,10 @@ E.g.:
 models:
   - name: stg_prepared_source
     columns:
-          - name: date
-            tests:
-              - not_null
-              - unique
+       - name: date
+         tests:
+           - not_null
+           - unique
 ```
 
 
@@ -205,12 +222,12 @@ select
       count(*) as failures,
       count(*) != 0 as should_warn,
       count(*) != 0 as should_error
-    from (
-      select *
-from "postgres"."public"."stg_prepared_source"
-where confirmed < new_confirmed
-      
-    ) dbt_internal_test
+from (
+   select *
+   from "postgres"."public"."stg_prepared_source"
+   where confirmed < new_confirmed
+
+) dbt_internal_test
 
 ```
 If for any reason this query returns values, the test is said to have failed.
@@ -255,20 +272,19 @@ Ref: https://docs.getdbt.com/docs/building-a-dbt-project/documentation
 
 Update dbt documents
 ```bash
-
 dbt docs generate --profiles-dir ./profiles
 ```
 Check out the documentation and the data flow graph
-```
+```bash
 dbt docs serve --profiles-dir ./profiles
 ```
 
 ## Configuration files
 At this point you might have noticed the .yaml files. 
 
-<b>src_covid_data.yml</b> file holds the source tables and gives us a way to:
-* Reference these tables with the {{ source(<source_name>, <table_name>) }}
-* Add descriptions at table or column level (view them on with docs serve)
+```bash src_covid_data.yml``` file holds the source tables and gives us a way to:
+* Reference these tables with the ```bash {{ source(<source_name>, <table_name>) }}```
+* Add descriptions at table or column level (view them on with ```bash docs serve```)
 * Create a directed graph of dependencies between tables that show the data flow.
 
 ```
@@ -281,7 +297,7 @@ demo
 
 ```
 
-Same thing for <b>stg_models.yml</b> but for models instead of sources.
+Same thing for ```bash stg_models.yml``` but for models instead of sources.
 
 ## Stop the docker container 
 ```bash
@@ -301,7 +317,8 @@ docker compose up --build
 ## Open the UI
 Use a browser to navigate to  http://localhost:8501
 
-From this point on, follow your instincts.
+Select the countries you want to get information on and click Get Data. This will fill the database with the data and will display it as a pandas DataFrame.
+You can pick as many countries as you like. Click Clear to remove all the output.
 
 
 
