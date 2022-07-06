@@ -48,6 +48,8 @@ version: '3.5'
 services:
   streamlit:
     build: .
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
     ports:
       - "8501:8501"
     volumes:
