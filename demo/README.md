@@ -75,11 +75,11 @@ By "three keys" I mean <kbd>Ctrl</kbd> + <kbd>C</kbd> and <kbd>Ctrl</kbd> + <kbd
 
 
 ## Get data from the API
-There is a python script that reads from  https://corona-api.com/countries/{country_code}?includeTimeline=True and writes in ```bash covid_data.csv``` in the <b>seeds</b> folder.
+There is a python script that reads from  https://corona-api.com/countries/{country_code}?includeTimeline=True and writes in ```covid_data.csv``` in the <b>seeds</b> folder.
 
 E.g.  https://corona-api.com/countries/al?includeTimeline=True
 
-An example of the JSON response is as follows. The ```bash data.timeline``` list is what feeds the <i>covid_data</i> table with records.
+An example of the JSON response is as follows. The ```data.timeline``` list is what feeds the ```covid_data``` table with records.
 
 ```
 {
@@ -125,7 +125,7 @@ An example of the JSON response is as follows. The ```bash data.timeline``` list
    }
 
 ```
-So the API needs a countries code to return data. For this there is a ```bash COUNTRIES``` list hardcoded on ```bash get_data.py``` script.
+So the API needs a countries code to return data. For this there is a ```COUNTRIES``` list hardcoded on ```get_data.py``` script.
 Add any country code to this list to feed the dataset with new data. 
 ```
 COUNTRIES = ['AL', 'DE']
@@ -138,11 +138,11 @@ python get_data.py
 
 
 ## CSV to database tables
-Seeds are CSV files in your dbt project (typically in your seeds directory), that dbt can load into your data warehouse using the ```bashdbt seed``` command.
+Seeds are CSV files in your dbt project (typically in your seeds directory), that dbt can load into your data warehouse using the ```dbt seed``` command.
 ```bash
 dbt seed --profiles-dir ./profiles
 ```
-Refresh the <i>public_source</i> schema of the <i>postgres</i> database to check that both csv-s are converted to database tables.
+Refresh the ```public_source``` schema of the ```postgres``` database to check that both csv-s are converted to database tables.
 
 These are going to be used as the source for the rest of our models.
 
@@ -164,7 +164,7 @@ Types:
 * Ephemeral
 * Incremental
 
-All materializations are re-built everytime the ```bash dbt run``` command is executed. This results on re-processing the same records over and over again.
+All materializations are re-built everytime the ```dbt run``` command is executed. This results on re-processing the same records over and over again.
 
 To filter the data to be processed, one can use the Incremental type of materialization
 and define the filter rule like this:
@@ -219,9 +219,9 @@ where confirmed < new_confirmed
 How dbt interprets it :
 ```
 select
-      count(*) as failures,
-      count(*) != 0 as should_warn,
-      count(*) != 0 as should_error
+   count(*) as failures,
+   count(*) != 0 as should_warn,
+   count(*) != 0 as should_error
 from (
    select *
    from "postgres"."public"."stg_prepared_source"
@@ -282,9 +282,9 @@ dbt docs serve --profiles-dir ./profiles
 ## Configuration files
 At this point you might have noticed the .yaml files. 
 
-```bash src_covid_data.yml``` file holds the source tables and gives us a way to:
-* Reference these tables with the ```bash {{ source(<source_name>, <table_name>) }}```
-* Add descriptions at table or column level (view them on with ```bash docs serve```)
+```src_covid_data.yml``` file holds the source tables and gives us a way to:
+* Reference these tables with the ```{{ source(<source_name>, <table_name>) }}```
+* Add descriptions at table or column level (view them on with ```docs serve```)
 * Create a directed graph of dependencies between tables that show the data flow.
 
 ```
@@ -297,7 +297,7 @@ demo
 
 ```
 
-Same thing for ```bash stg_models.yml``` but for models instead of sources.
+Same thing for ```stg_models.yml``` but for models instead of sources.
 
 ## Stop the docker container 
 ```bash
