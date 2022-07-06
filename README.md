@@ -9,7 +9,6 @@ Dbt project with postgres, python, and streamlit.
 * Python
 * dbt-core & dbt-postgres
 * Docker Compose
-* The Office (American TV series)
 
 # Run the dbt project without Streamlit
 
@@ -65,14 +64,10 @@ Once they are installed, you are then able to call them via {{_}} Jinja tags. Th
 
 E.g.: {{ macro_name(<optional_parameters>)}}
 
-Refer to https://hub.getdbt.com/ to check out many many packages.
+Refer to https://hub.getdbt.com/ to check out packages and their usage.
 ```bash
 dbt deps
 ```
-From now on every other command will have a prefix of 'dbt', so be prepared to ruin those three keyboard keys.
-
-By "three keys" I mean <kbd>Ctrl</kbd> + <kbd>C</kbd> and <kbd>Ctrl</kbd> + <kbd>V</kbd>  🤓
-
 
 ## Get data from the API
 There is a python script that reads from  https://corona-api.com/countries/{country_code}?includeTimeline=True and writes in ```covid_data.csv``` in the <b>seeds</b> folder.
@@ -125,15 +120,13 @@ An example of the JSON response is as follows. The ```data.timeline``` list is w
    }
 
 ```
-So the API needs a countries code to return data. For this there is a ```COUNTRIES``` list hardcoded on ```get_data.py``` script.
+So the API needs a country code to return data. For this there is a ```countries```  list of country codes you need to provide as arguments.
 Add any country code to this list to feed the dataset with new data. 
-```
-COUNTRIES = ['AL', 'DE']
-```
 
 Run script
 ```bash
-python get_data.py
+# In this case we are calling the API for al-albania, de-germany, it-italy
+python get_data.py -i al de it
 ```
 
 
@@ -253,14 +246,13 @@ Analysis are sql files you want to save and version inside of your dbt project b
 ```bash
  dbt compile --select analysis --profiles-dir ./profiles
 ```
-Fact:
+
 You can actually just compile models too by replacing 'run' with 'compile' and see the generated sql under the <b>targets</b> folder.
 
-Another fact: Bears eat beets.
 
 
-## Macros aren't really that big
-Just a fancy word for function. In this project they are mainly called within models but they can also be executed separately.
+## Macros 
+Another word for function. In this project they are mainly called within models but they can also be executed separately.
 ```bash
 # dbt run-operation {macro} --args {args}
 
@@ -283,9 +275,9 @@ dbt docs serve --profiles-dir ./profiles
 At this point you might have noticed the .yaml files. 
 
 ```src_covid_data.yml``` file holds the source tables and gives us a way to:
-* Reference these tables with the ```{{ source(<source_name>, <table_name>) }}```
+* Reference these tables with the ```{{ source(<source_name>, <table_name>) }}``` syntax
 * Add descriptions at table or column level (view them on with ```docs serve```)
-* Create a directed graph of dependencies between tables that show the data flow.
+* Create a directed graph of dependencies between tables that shows the data flow.
 
 ```
 demo
@@ -322,7 +314,8 @@ You can pick as many countries as you like. Click Clear to remove all the output
 
 
 
-## Stop the docker container and create your own dbt project 💃
+## Stop the docker container
 ```bash
 docker compose down
 ```
+
