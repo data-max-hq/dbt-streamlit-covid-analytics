@@ -42,7 +42,12 @@ Make sure you are using a virtual environment for this.
 
 
 ## Install dbt packages 
-Refer to https://hub.getdbt.com/
+Packages stated at the <b>packages.yml</b> file must be installed in order to use predefined functions, which in dbt are called <i>macros</i>.
+Once they are installed, you are then able to call them via {{_}} Jinja tags. These type of functions can be called inside sql queries or independently. 
+
+E.g.: {{ macro_name(<optional_parameters>)}}
+
+Refer to https://hub.getdbt.com/ to check out many many packages.
 ```bash
 cd demo
 dbt deps
@@ -53,7 +58,7 @@ By "three keys" I mean <kbd>Ctrl</kbd> + <kbd>C</kbd> and <kbd>Ctrl</kbd> + <kbd
 
 
 ## Get data from the API
-There is python script that reads from  https://corona-api.com/countries/{country_code}?includeTimeline=True and writes in <i>covid_data.csv</i> in the <b>seeds</b> folder.
+There is a python script that reads from  https://corona-api.com/countries/{country_code}?includeTimeline=True and writes in <i>covid_data.csv</i> in the <b>seeds</b> folder.
 
 E.g.  https://corona-api.com/countries/al?includeTimeline=True
 
@@ -102,8 +107,13 @@ An example of the JSON response is as follows. The <b>data.timeline</b> list is 
       }
    }
 
-
 ```
+So the API needs a countries code to return data. For this there is a <b>COUNTRIES</b> list hardcoded on get_data.py script.
+Add any country code to this list to feed the dataset with new data. 
+```
+COUNTRIES = ['al', 'de']
+```
+
 Run script
 ```bash
 python get_data.py
@@ -137,6 +147,19 @@ Types:
 * Ephemeral
 * Incremental
 
+All materializations are re-built everytime the <b>run</b> command is executed. This results on re-processing the same records over and over again.
+
+To filter the data to be processed, one can use the Incremental type of materialization
+and define the filter rule like this:
+```
+    {% if is_incremental() %}
+
+        -- this filter will only be applied on an incremental run
+        [where condition on the sql query]
+
+    {% endif %}
+```
+
 Ref: https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations
 
 To fully refresh an incremental model use the following command:
@@ -146,10 +169,55 @@ dbt run --full-refresh --profiles-dir ./profiles
 
 
 ## Run tests
-Tests are SQL queries done to the data. 
+Tests are SQL queries executed against the data to check for logical mistakes.
+
 Types:
 * Singular - built-in
-* Generic  - custom tests defined as sql files under the <b>tests</b> folder.
+* Generic  - custom tests
+
+Singular tests are used inside the configuration yaml files. They have to assiged to a column in order to run.
+E.g.:
+```
+models:
+  - name: stg_prepared_source
+    columns:
+          - name: date
+            tests:
+              - not_null
+              - unique
+```
+
+
+Generic tests are defined as sql files under the <b>tests</b> folder. These types of tests are done automatically, once you save the sql file.
+
+E.g.:
+
+Test written by the developer:
+```
+select *
+from {{ ref('stg_prepared_source')}}
+where confirmed < new_confirmed
+
+```
+How dbt interprets it :
+```
+select
+      count(*) as failures,
+      count(*) != 0 as should_warn,
+      count(*) != 0 as should_error
+    from (
+      select *
+from "postgres"."public"."stg_prepared_source"
+where confirmed < new_confirmed
+      
+    ) dbt_internal_test
+
+```
+If for any reason this query returns values, the test is said to have failed.
+
+
+
+Run tests:
 ```bash
 # Run all tests
 dbt test --profiles-dir ./profiles
@@ -184,13 +252,36 @@ dbt run-operation run_this_sql --profiles-dir ./profiles
 
 ## Docs and DAGs
 Ref: https://docs.getdbt.com/docs/building-a-dbt-project/documentation
-```bash
-# Update dbt documents
-dbt docs generate --profiles-dir ./profiles
 
-# Check out the documentation and the data flow graph
+Update dbt documents
+```bash
+
+dbt docs generate --profiles-dir ./profiles
+```
+Check out the documentation and the data flow graph
+```
 dbt docs serve --profiles-dir ./profiles
 ```
+
+## Configuration files
+At this point you might have noticed the .yaml files. 
+
+<b>src_covid_data.yml</b> file holds the source tables and gives us a way to:
+* Reference these tables with the {{ source(<source_name>, <table_name>) }}
+* Add descriptions at table or column level (view them on with docs serve)
+* Create a directed graph of dependencies between tables that show the data flow.
+
+```
+demo
+├─ models
+│  ├─ staging
+│  │  ├─ src_covid_data.yml
+│  │  ├─ stg_models.yml
+│  │  └─ *.sql
+
+```
+
+Same thing for <b>stg_models.yml</b> but for models instead of sources.
 
 ## Stop the docker container 
 ```bash
