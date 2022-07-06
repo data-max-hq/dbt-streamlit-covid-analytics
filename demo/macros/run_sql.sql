@@ -2,7 +2,7 @@
 
     {% set data_today  %}
 
-        select  {{ dbt_date.today("	Europe/Berlin") }}
+        select  {{ dbt_date.today("Europe/Berlin") }}
 
     {% endset %}
 
