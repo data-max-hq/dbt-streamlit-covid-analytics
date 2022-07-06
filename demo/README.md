@@ -3,7 +3,7 @@ Welcome to your new dbt project!
 
 # covid-dbt-analytics
 Dbt project with postgres, python, and streamlit.
-<hr>
+
 
 ## Requirements
 * Python
