@@ -175,7 +175,7 @@ Types:
 * Singular - built-in
 * Generic  - custom tests
 
-Singular tests are used inside the configuration yaml files. They have to assiged to a column in order to run.
+Singular tests are used inside the configuration yaml files. They have to be assigned to a column in order to run.
 E.g.:
 ```
 models:
@@ -231,7 +231,7 @@ dbt test --select test_type:generic
 
 
 ## Compile analyses
-Analysis are sql files  you want to save and version inside of your dbt project but you don't need to materialize them.
+Analysis are sql files you want to save and version inside of your dbt project but you don't need to materialize them.
 
 ```bash
  dbt compile --select analysis --profiles-dir ./profiles
@@ -290,7 +290,7 @@ docker compose down
 
 <hr>
 
-# Run the dbt project with streamlit
+# Run the dbt project with Streamlit
 
 ## Install requirements and create the docker containers
 
@@ -301,7 +301,7 @@ docker compose up --build
 ## Open the UI
 Use a browser to navigate to  http://localhost:8501
 
-From the UI choose a list of countries you would like so see analytics regarging covid for the past 2-3 years and the output messages will show you the steps followed to generate a line graph for each chosen country.
+From this point on, follow your instincts.
 
 
 
