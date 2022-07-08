@@ -5,7 +5,6 @@ import sys
 
 df_main = None
 countries = sys.argv[2:]
-print(countries)
 for country_code in countries:
     url = f"https://corona-api.com/countries/{country_code}?includeTimeline=True"
     response = requests.request("GET", url)
