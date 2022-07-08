@@ -42,9 +42,6 @@ def populate_db(countries):
 
     st.success('Db populated!')
 
-def set_false(button):
-    button = False
-
 def create_seeds(countries):
     df_main = None
 
@@ -74,10 +71,10 @@ components.html("""
 country_samples = []
 country_codes = []
 
-for i in range(0,20):
-    # Get names and country codes for 20 countries
-    country_samples.append(list(country.countries)[i].name)
-    country_codes.append(list(country.countries)[i].alpha_2)
+for c in country.countries:
+    # Get names and country codes for all ISO:3166 countries
+    country_samples.append(c.name)
+    country_codes.append(c.alpha_2)
 
 st.write('# *DBT Visualisation App*')
 selection = st.multiselect('Select countries: ', country_samples)
@@ -92,9 +89,6 @@ with col1:
     get_data = st.button('Get Data', 1, 'Get data for the countries selected')
 with col2:
     clear = st.button('Clear', 2)
-
-if clear:
-    set_false(get_data)
 
 if get_data:
     populate_db(selection_codes)
