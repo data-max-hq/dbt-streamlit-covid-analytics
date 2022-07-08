@@ -2,9 +2,10 @@ import requests
 import json
 import pandas as pd
 import sys
-countries = ['AL', 'DE']
+
 df_main = None
-print(sys.argv[2:])
+countries = sys.argv[2:]
+print(countries)
 for country_code in countries:
     url = f"https://corona-api.com/countries/{country_code}?includeTimeline=True"
     response = requests.request("GET", url)

@@ -7,14 +7,11 @@
     {% endset %}
 
     {% set sql_query  %}
-
          select to_char(date, 'YYYY') as _year,
                 sum(new_recovered) recovered
         from {{ ref('stg_prepared_source') }}
         where code = {{"'"}}{{code}}{{"'"}}
         group by  _year
-
-
     {% endset  %}
 
     {% if execute %}
