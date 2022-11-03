@@ -12,10 +12,10 @@ from sqlalchemy import create_engine
 engine = create_engine('postgresql://postgres:postgres@host.docker.internal:5432/postgres')
 
 def populate_db(countries):
-    with st.spinner('Creating the seeds...'):
-        create_seeds(countries)
-        time.sleep(1)
-    st.success('Seeds successfully created!')
+    # with st.spinner('Creating the seeds...'):
+    #     create_seeds(countries)
+    #     time.sleep(1)
+    # st.success('Seeds successfully created!')
 
     with st.spinner('Installing dependencies...'):
         os.system('dbt deps')

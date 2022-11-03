@@ -8,6 +8,7 @@ countries = sys.argv[2:]
 for country_code in countries:
     url = f"https://corona-api.com/countries/{country_code}?includeTimeline=True"
     response = requests.request("GET", url)
+    print(response.text)
     data = json.loads(response.text)
     timeline = data['data']['timeline']
     df = pd.DataFrame(timeline)

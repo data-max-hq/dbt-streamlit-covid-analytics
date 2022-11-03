@@ -4,30 +4,29 @@ services:
   streamlit:
     build: .
     extra_hosts:
-    - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"
     ports:
       - "8501:8501"
     volumes:
       - streamlit:/data/streamlit
     depends_on:
-      - db
-      
+      - postgres
+
   postgres:
-    container_name: db
-    image: postgres
+    container_name: postgres
+    image: postgres:13
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DATABASE: ${POSTGRES_PASSWORD:-postgres}
       PGDATA: /data/postgres
     volumes:
-       - postgres:/data/postgres
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
       - postgres
     restart: unless-stopped
-
 
 networks:
   postgres:
