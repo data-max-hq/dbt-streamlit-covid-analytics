@@ -10,10 +10,10 @@ services:
     volumes:
       - streamlit:/data/streamlit
     depends_on:
-      - db
+      - postgres
       
   postgres:
-    container_name: db
+    container_name: postgres
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
