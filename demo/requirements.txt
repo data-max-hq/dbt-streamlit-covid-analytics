@@ -6,3 +6,4 @@ pycountry
 sqlalchemy
 emoji
 diagrams
+black
